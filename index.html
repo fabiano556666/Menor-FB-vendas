@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel @Fabiano_do7</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #eee;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #1abc9c;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      color: #222;
+      user-select: none;
+    }
+    #authContainer {
+      background: #222;
+      width: 320px;
+      margin: 30px auto;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 0 10px #1abc9c;
+    }
+    #authContainer h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 4px;
+      border: none;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #1abc9c;
+      color: #222;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #16a085;
+    }
+    #toggleAuth {
+      margin-top: 10px;
+      text-align: center;
+      cursor: pointer;
+      color: #1abc9c;
+      font-size: 14px;
+      user-select: none;
+    }
+    #welcomeMsg {
+      text-align: center;
+      margin: 20px auto;
+      font-size: 18px;
+      font-weight: bold;
+      color: #1abc9c;
+    }
+    #productsTable {
+      max-width: 900px;
+      margin: 30px auto;
+      border-collapse: collapse;
+      width: 100%;
+      background: #222;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 15px #1abc9c;
+    }
+    #productsTable th, #productsTable td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #444;
+      text-align: left;
+    }
+    #productsTable th {
+      background: #1abc9c;
+      color: #222;
+      text-transform: uppercase;
+      font-size: 14px;
+      user-select: none;
+    }
+    #productsTable tr:hover {
+      background: #333;
+    }
+    .btnComprar {
+      padding: 6px 10px;
+      border: none;
+      background: #1abc9c;
+      color: #222;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    .btnComprar:hover {
+      background: #16a085;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      user-select: none;
+      padding-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Painel @Fabiano_do7
+  </header>
+
+  <div id="authContainer">
+    <h2 id="authTitle">Login</h2>
+    <label for="username">Usuário:</label>
+    <input type="text" id="username" placeholder="Digite seu usuário" autocomplete="off" />
+    <label for="password">Senha:</label>
+    <input type="password" id="password" placeholder="Digite sua senha" autocomplete="off" />
+    <button id="authButton">Entrar</button>
+    <div id="toggleAuth">Não tem uma conta? <span id="toggleLink" style="color:#1abc9c; cursor:pointer;">Registrar</span></div>
+  </div>
+
+  <div id="welcomeMsg" style="display:none;"></div>
+
+  <table id="productsTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>Categoria</th>
+        <th>Produto</th>
+        <th>Descrição</th>
+        <th>Comprar</th>
+      </tr>
+    </thead>
+    <tbody id="productsBody">
+      <!-- produtos vão aqui -->
+    </tbody>
+  </table>
+
+  <footer>
+    Contato: Telegram <a href="https://t.me/Fabiano_do7" target="_blank" style="color:#1abc9c;">@Fabiano_do7</a> | Instagram <a href="https://instagram.com/fabiano_do7" target="_blank" style="color:#1abc9c;">@fabiano_do7</a>
+  </footer>
+
+  <script>
+    // Limpa o usuário logado para garantir que comece na tela de login
+    localStorage.removeItem('currentUser');
+
+    const PRODUCTS = [
+      { category: "NOSSOS PRODUTOS", name: "BURLADOR DE SELFIE caixa tem -", desc: "Item demonstrativo — exemplo de produto." },
+      { category: "NOSSOS PRODUTOS", name: "burlador selfie PAGBANK -", desc: "Item demonstrativo — exemplo de produto." },
+      { category: "NOSSOS PRODUTOS", name: "BURLADOR SELFIE -", desc: "Item demonstrativo — exemplo de produto." },
+      { category: "NOSSOS PRODUTOS", name: "FAKE CAMERA -", desc: "Item demonstrativo — exemplo de produto." },
+      { category: "NOSSOS PRODUTOS", name: "burladorBanco Monex -", desc: "Item demonstrativo — exemplo de produto." },
+      { category: "KL REMOTAS", name: "CRAXSRAT 7.4 VIP BY FABIANO ()", desc: "Exemplo de categoria 'remotas'." },
+      { category: "KL REMOTAS", name: "CRAXSRAT 6.8 VIP BY FABIANO ()", desc: "Exemplo de categoria 'remotas'." },
+      { category: "KL REMOTAS", name: "MEDUSA RAT 8.7 VIP BY FABIANO ()", desc: "Exemplo de categoria 'remotas'." },
+      { category: "KL REMOTAS", name: "EAGLESPY RAT V6.1 BY FABIANO ()", desc: "Exemplo de categoria 'remotas'." },
+      { category: "KL REMOTAS", name: "EVERSPY 7.4 RAT VIP BY FABIANO ()", desc: "Exemplo de categoria 'remotas'." },
+      { category: "BANCOS FAKES", name: "PAGBANK ()", desc: "Lista de exemplos (apenas demonstração)." },
+      { category: "BANCOS FAKES", name: "MERCADO PAGO ()", desc: "Lista de exemplos (apenas demonstração)." },
+      { category: "BANCOS FAKES", name: "INTER ()", desc: "Lista de exemplos (apenas demonstração)." },
+      { category: "BANCOS FAKES", name: "NUBANK ()", desc: "Lista de exemplos (apenas demonstração)." },
+      { category: "BANCOS FAKES", name: "PIC PAY ()", desc: "Lista de exemplos (apenas demonstração)." },
+      { category: "OUTROS APKS", name: "PAINEL DO 7 ()", desc: "Versão de demonstração/ exemplo" }
+    ];
+
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    let currentUser = localStorage.getItem('currentUser') || null;
+
+    const authContainer = document.getElementById('authContainer');
+    const authTitle = document.getElementById('authTitle');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const authButton = document.getElementById('authButton');
+    const toggleAuth = document.getElementById('toggleAuth');
+    const welcomeMsg = document.getElementById('welcomeMsg');
+    const productsTable = document.getElementById('productsTable');
+    const productsBody = document.getElementById('productsBody');
+
+    let isLoginMode = true;
+
+    function renderProducts() {
+      productsBody.innerHTML = '';
+      PRODUCTS.forEach(prod => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${prod.category}</td>
+          <td>${prod.name}</td>
+          <td>${prod.desc}</td>
+          <td><button class="btnComprar" onclick="comprarProduto('${prod.name.trim()}')">Comprar</button></td>
+        `;
+        productsBody.appendChild(tr);
+      });
+    }
+
+    function comprarProduto(nomeProduto) {
+      const escolha = prompt(`Você quer me chamar no Telegram ou Instagram para comprar "${nomeProduto}"?\nDigite:\n1 para Telegram\n2 para Instagram`);
+      if (escolha === '1') {
+        window.open('https://t.me/Fabiano_do7', '_blank');
+      } else if (escolha === '2') {
+        window.open('https://instagram.com/fabiano_do7', '_blank');
+      } else {
+        alert('Escolha inválida ou cancelada.');
+      }
+    }
+
+    function showWelcome(user) {
+      welcomeMsg.textContent = `Bem-vindo, ${user}!`;
+      welcomeMsg.style.display = 'block';
+      authContainer.style.display = 'none';
+      productsTable.style.display = 'table';
+      renderProducts();
+    }
+
+    function resetAuthForm() {
+      usernameInput.value = '';
+      passwordInput.value = '';
+    }
+
+    authButton.addEventListener('click', () => {
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!username || !password) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+
+      if (isLoginMode) {
+        // Login
+        if (users[username] && users[username] === password) {
+          currentUser = username;
+          localStorage.setItem('currentUser', currentUser);
+          showWelcome(currentUser);
+        } else {
+          alert('Usuário ou senha incorretos.');
+        }
+      } else {
+        // Registro
+        if (users[username]) {
+          alert('Usuário já existe.');
+        } else {
+          users[username] = password;
+          localStorage.setItem('users', JSON.stringify(users));
+          alert('Registro realizado com sucesso! Agora faça login.');
+          isLoginMode = true;
+          authTitle.textContent = 'Login';
+          authButton.textContent = 'Entrar';
+          toggleAuth.innerHTML = 'Não tem uma conta? <span id="toggleLink" style="color:#1abc9c; cursor:pointer;">Registrar</span>';
+          resetAuthForm();
+          // Atualiza o evento do toggleLink
+          document.getElementById('toggleLink').addEventListener('click', toggleMode);
+        }
+      }
+    });
+
+    function toggleMode() {
+      isLoginMode = !isLoginMode;
+      if (isLoginMode) {
+        authTitle.textContent = 'Login';
+        authButton.textContent = 'Entrar';
+        toggleAuth.innerHTML = 'Não tem uma conta? <span id="toggleLink" style="color:#1abc9c; cursor:pointer;">Registrar</span>';
+      } else {
+        authTitle.textContent = 'Registrar';
+        authButton.textContent = 'Registrar';
+        toggleAuth.innerHTML = 'Já tem uma conta? <span id="toggleLink" style="color:#1abc9c; cursor:pointer;">Entrar</span>';
+      }
+      resetAuthForm();
+      document.getElementById('toggleLink').addEventListener('click', toggleMode);
+    }
+
+    toggleAuth.addEventListener('click', (e) => {
+      if (e.target && e.target.id === 'toggleLink') {
+        toggleMode();
+      }
+    });
+
+    // NÃO mostra os produtos direto pq a linha que limpa currentUser já foi chamada no começo
+  </script>
+</body>
+</html>
